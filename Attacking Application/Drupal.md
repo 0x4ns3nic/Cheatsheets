@@ -1,5 +1,11 @@
 ## Info
 
+Drupal supports three types of users by default:
+
+1. `Administrator`: This user has complete control over the Drupal website.
+2. `Authenticated User`: These users can log in to the website and perform operations such as adding and editing articles based on their permissions.
+3. `Anonymous`: All website visitors are designated as anonymous. By default, these users are only allowed to read posts.
+
 `/node/<nodeid>`
 
 `CHANGELOG.txt`
