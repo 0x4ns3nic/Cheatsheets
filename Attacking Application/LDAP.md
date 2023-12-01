@@ -52,3 +52,21 @@ To check if you have access to any password, use `grep` after executing one of t
 **Dumping**(if you have creds):
 
 `ldapdomaindump <IP> [-r <IP>] -u '<domain>\<username>' -p '<password>' [--authtype SIMPLE] --no-json --no-grep [-o /path/dir]`
+
+
+## Crackmapexec
+
+```
+crackmapexec ldap <IP> -u <User> -p <Password> --kdcHost <Host> --admin-count
+crackmapexec ldap <IP> -u <User> -p <Password> --kdcHost <Host>  --asreproast ASREPROAST
+crackmapexec ldap <IP> -u <User> -p <Password> --kdcHost <Host>  --groups
+crackmapexec ldap'<IP> -u <User> -p <Password> --kdcHost <Host>  --kerberoasting KERBEROASTING
+crackmapexec ldap <IP> -u <User> -p <Password> --kdcHost <Host>  --password-not-required
+crackmapexec ldap <IP> -u <User> -p <Password> --kdcHost <Host>  --trusted-for-delegation
+crackmapexec ldap <IP> -u <User> -p <Password> --kdcHost <Host>  --users
+
+# Modules
+crackmapexec ldap <IP> -u <User> -p <Password> --kdcHost <Host> -M get-desc-users
+crackmapexec ldap <IP> -u <User> -p <Password> --kdcHost <Host> -M laps
+crackmapexec ldap <IP> -u <User> -p <Password> --kdcHost <Host> -M ldap-signing
+```
