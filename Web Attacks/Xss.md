@@ -96,3 +96,9 @@ We can save the following PHP script as `index.php`, and re-run the PHP server 
 ```
 sudo php -S 0.0.0.0:80
 ```
+
+
+## References:
+
+- https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/XSS%20Injection#blind-xss
+- https://github.com/payloadbox/xss-payload-list
