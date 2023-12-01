@@ -1,8 +1,8 @@
 **Directory Fuzzing**
 
-`XeroCyb3r@htb[/htb]**$** ffuf -w <file path>:FUZZ -u http://SERVER_IP:PORT/FUZZ`
+`XeroCyb3r@htb[/htb]$ ffuf -w <file path>:FUZZ -u http://SERVER_IP:PORT/FUZZ`
 
-`XeroCyb3r@htb[/htb]**$** ffuf -w /opt/useful/SecLists/Discovery/Web-Content/directory-list-2.3-small.txt:FUZZ -u http://94.237.62.195:41956/FUZZ`
+`XeroCyb3r@htb[/htb]$ ffuf -w /opt/useful/SecLists/Discovery/Web-Content/directory-list-2.3-small.txt:FUZZ -u http://94.237.62.195:41956/FUZZ`
 
 We can even make it go faster if we are in a hurry by increasing the number of threads to 200, for example, with -t 200.
 
@@ -18,9 +18,9 @@ We can even make it go faster if we are in a hurry by increasing the number of t
 
 ## Subdomain Fuzzing
 
-`XeroCyb3r@htb[/htb]**$** ffuf -w /opt/useful/SecLists/Discovery/DNS/subdomains-top1million-5000.txt:FUZZ -u https://FUZZ.inlanefreight.com/`
+`XeroCyb3r@htb[/htb]$ ffuf -w /opt/useful/SecLists/Discovery/DNS/subdomains-top1million-5000.txt:FUZZ -u https://FUZZ.inlanefreight.com/`
 
-`XeroCyb3r@htb[/htb]**$** ffuf -w /opt/useful/SecLists/Discovery/DNS/subdomains-top1million-5000.txt:FUZZ -u http://FUZZ.academy.htb/`
+`XeroCyb3r@htb[/htb]$ ffuf -w /opt/useful/SecLists/Discovery/DNS/subdomains-top1million-5000.txt:FUZZ -u http://FUZZ.academy.htb/`
 
 ## Vhost  Fuzzing
 
@@ -32,15 +32,15 @@ We can even make it go faster if we are in a hurry by increasing the number of t
 
 `XeroCyb3r@htb[/htb]$ ffuf -w /opt/useful/SecLists/Discovery/Web-Content/burp-parameter-names.txt:FUZZ -u http://admin.academy.htb:41956/admin/admin.php?FUZZ=key -fs xxx`
 
-`XeroCyb3r@htb[/htb]**$** ffuf -w /opt/useful/SecLists/Discovery/Web-Content/burp-parameter-names.txt:FUZZ -u http://admin.academy.htb:PORT/admin/admin.php -X POST -d 'FUZZ=key' -H 'Content-Type: application/x-www-form-urlencoded' -fs xxx`
+`XeroCyb3r@htb[/htb]$ ffuf -w /opt/useful/SecLists/Discovery/Web-Content/burp-parameter-names.txt:FUZZ -u http://admin.academy.htb:PORT/admin/admin.php -X POST -d 'FUZZ=key' -H 'Content-Type: application/x-www-form-urlencoded' -fs xxx`
 
-`XeroCyb3r@htb[/htb]**$** curl http://admin.academy.htb:PORT/admin/admin.php -X POST -d 'id=key' -H 'Content-Type: application/x-www-form-urlencoded'`
+`XeroCyb3r@htb[/htb]$ curl http://admin.academy.htb:PORT/admin/admin.php -X POST -d 'id=key' -H 'Content-Type: application/x-www-form-urlencoded'`
 
 ## Fuzzing Values
 
-`XeroCyb3r@htb[/htb]**$** for i in $(seq 1 1000); do echo $i >> ids.txt; done`
+`XeroCyb3r@htb[/htb]$ for i in $(seq 1 1000); do echo $i >> ids.txt; done`
 
-`XeroCyb3r@htb[/htb]**$** cat ids.txt`
+`XeroCyb3r@htb[/htb]$ cat ids.txt`
 
-`XeroCyb3r@htb[/htb]**$** ffuf -w ids.txt:FUZZ -u http://admin.academy.htb:PORT/admin/admin.php -X POST -d 'id=FUZZ' -H 'Content-Type: application/x-www-form-urlencoded' -fs xxx`
+`XeroCyb3r@htb[/htb]$ ffuf -w ids.txt:FUZZ -u http://admin.academy.htb:PORT/admin/admin.php -X POST -d 'id=FUZZ' -H 'Content-Type: application/x-www-form-urlencoded' -fs xxx`
 
