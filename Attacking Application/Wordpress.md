@@ -1,14 +1,99 @@
+## Info
+
+```
+L3pr3ch4un@htb[/htb]$ tree -L 1 /var/www/html
+.
+├── index.php
+├── license.txt
+├── readme.html
+├── wp-activate.php
+├── wp-admin
+├── wp-blog-header.php
+├── wp-comments-post.php
+├── wp-config.php
+├── wp-config-sample.php
+├── wp-content
+├── wp-cron.php
+├── wp-includes
+├── wp-links-opml.php
+├── wp-load.php
+├── wp-login.php
+├── wp-mail.php
+├── wp-settings.php
+├── wp-signup.php
+├── wp-trackback.php
+└── xmlrpc.php
+```
+
+| File/Directory | Description |
+| --- | --- |
+| index.php | Homepage of WordPress. |
+| license.txt | Contains useful information such as the version of WordPress installed. |
+| wp-activate.php | Used for the email activation process when setting up a new WordPress site. |
+| wp-admin | Folder containing the login page for administrator access and the backend dashboard. Login paths: /wp-admin/login.php, /wp-admin/wp-login.php, /login.php, /wp-login.php. This file can be renamed for security. |
+| xmlrpc.php | File representing a feature of WordPress that enables data transmission using HTTP and XML. Replaced by the WordPress REST API. |
+| wp-config.php | Configuration file containing database connection details, authentication keys, salts, and other settings. Can activate DEBUG mode for troubleshooting. |
+| wp-content | Main directory for storing plugins and themes. The uploads/ subdirectory typically stores uploaded files. |
+| wp-includes | Directory containing core files such as certificates, fonts, JavaScript files, and widgets. Excludes administrative components and themes. |
+
+| Role | Description |
+| --- | --- |
+| Administrator | This user has access to administrative features within the website. This includes adding and deleting users and posts, as well as editing source code. |
+| Editor | An editor can publish and manage posts, including the posts of other users. |
+| Author | Authors can publish and manage their own posts. |
+| Contributor | These users can write and manage their own posts but cannot publish them. |
+| Subscriber | These are normal users who can browse posts and edit their profiles. |
+
+
+
+
 ## Enumeration 
+
+**Version Fingerprinting**
+
+`L3pr3ch4un@htb[/htb]$ curl -s -X GET http://blog.inlanefreight.com | grep '<meta name="generator"'`
+
+```
+# Search for JavaScript files with version parameters
+curl -s https://your-wordpress-site.com | grep -Eo 'src="[^"]+\.js\?ver=[^"]+"'
+
+# Search for CSS files with version parameters
+curl -s https://your-wordpress-site.com | grep -Eo 'href="[^"]+\.css\?ver=[^"]+"'
+```
+
+**Themes and Plugins**
+
+`L3pr3ch4un@htb[/htb]$ curl -s -X GET http://blog.inlanefreight.com | sed 's/href=/\n/g' | sed 's/src=/\n/g' | grep 'wp-content/plugins/*' | cut -d"'" -f2`
+
+`L3pr3ch4un@htb[/htb]$ curl -s -X GET http://blog.inlanefreight.com | sed 's/href=/\n/g' | sed 's/src=/\n/g' | grep 'themes' | cut -d"'" -f2`
+
+`L3pr3ch4un@htb[/htb]$ curl -I -X GET http://blog.inlanefreight.com/wp-content/plugins/mail-masta`
+
+If the content does not exist, we will receive a 404 Not Found error.
+
+**Directory indexing**
+
+`L3pr3ch4un@htb[/htb]$ curl -s -X GET http://blog.inlanefreight.com/wp-content/plugins/mail-masta/ | html2text`
+
+
+
+
+
+**Wpscan**
+
 `L3pr3ch4un@htb[/htb]$ sudo wpscan --url http://blog.inlanefreight.local --enumerate --api-token dEOFB<SNIP>`
 
 **Enumerate Users**
+
+`L3pr3ch4un@htb[/htb]$ curl -X POST -d "<methodCall><methodName>wp.getUsersBlogs</methodName><params><param><value>admin</value></param><param><value>CORRECT-PASSWORD</value></param></params></methodCall>" http://blog.inlanefreight.com/xmlrpc.php`
 
 `wpscan –url http://example.com –enumerate u`
 Api:*/wp-json/wp/v2/users*
 
 **Password Brute force**
 
-`L3pr3ch4un@htb[/htb]$ sudo wpscan --password-attack xmlrpc -t 20 -U doug -P /usr/share/wordlists/rockyou.txt --url http://blog.inlanefreight.local`
+`L3pr3ch4un@htb[/htb]$ sudo wpscan --password-attack xmlrpc -t 20 -U roger -P /usr/share/wordlists/rockyou.txt --url http://94.237.62.195:37110`
+
 **Code Execution**
 
 **Note: Use Alternative theme like  Twenty Nineteen**
