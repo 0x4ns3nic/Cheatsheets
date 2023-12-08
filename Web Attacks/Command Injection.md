@@ -8,6 +8,13 @@ However, it is very common for developers only to perform input validation on th
 
 ## Enumeration
 
+**Identifying**
+
+`L3pr3ch4un@htb[/htb]$ sudo tcpdump -i tun0 icmp`
+
+And `ping <your ip>`
+
+
 
 | Injection Operator | Injection Character | URL-Encoded Character | Executed Command |
 | --- | --- | --- | --- |
