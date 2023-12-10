@@ -91,9 +91,25 @@ function generate_reset_token($username) {
 
 - https://academy.hackthebox.com/storage/modules/80/scripts/username_injection_py.txt
 
+## Brute Forcing Cookies
+
+`user:htb;role:user`
+
+**Encrypted or encoded token**
+
+- Cyberchef
+- https://github.com/s0md3v/Decodify
+- https://academy.hackthebox.com/storage/modules/80/scripts/automate_cookie_tampering_py.txt
+
+**Weak session token**
+
+`L3pr3ch4un@htb[/htb]$ john --incremental=LowerNum --min-length=6 --max-length=6 --stdout| wfuzz -z stdin -b HTBSESS=FUZZ --ss "Welcome" -u https://brokenauthentication.hackthebox.eu/profile.php`
+
+
 ## Refrences
 
 - https://www.cirt.net/passwords
+- https://en.wikipedia.org/wiki/List_of_file_signatures
 - https://github.com/danielmiessler/SecLists/blob/master/Passwords/Default-Credentials/default-passwords.csv
 - https://github.com/scadastrangelove/SCADAPASS/blob/master/scadapass.csv
 - https://github.com/danielmiessler/SecLists/tree/master/Usernames
