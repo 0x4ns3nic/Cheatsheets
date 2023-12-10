@@ -76,8 +76,20 @@ function generate_reset_token($username) {
 
 - **Attacking mt_rand()**: https://github.com/GeorgeArgyros/Snowflake
 
-**Reset Token as Temp Password**
+## Username Injection
 
+```
+<?php
+  if isset($_REQUEST['userid']) {
+	$userid = $_REQUEST['userid'];
+  } else if isset($_SESSION['userid']) {
+	$userid = $_SESSION['userid'];
+  } else {
+	die("unknown userid");
+  }
+```
+
+- https://academy.hackthebox.com/storage/modules/80/scripts/username_injection_py.txt
 
 ## Refrences
 
