@@ -83,6 +83,10 @@ If the content does not exist, we will receive a 404 Not Found error.
 
 `L3pr3ch4un@htb[/htb]$ sudo wpscan --url http://blog.inlanefreight.local --enumerate --api-token dEOFB<SNIP>`
 
+**Xmlrpc**
+`[!bash!]$ curl -s -X POST -d "<methodCall><methodName>system.listMethods</methodName></methodCall>" http://blog.inlanefreight.com/xmlrpc.php`
+
+
 **Enumerate Users**
 
 `L3pr3ch4un@htb[/htb]$ curl -X POST -d "<methodCall><methodName>wp.getUsersBlogs</methodName><params><param><value>admin</value></param><param><value>CORRECT-PASSWORD</value></param></params></methodCall>" http://blog.inlanefreight.com/xmlrpc.php`
