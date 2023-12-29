@@ -35,17 +35,18 @@
 ```
 - Zone transfer: https://hackertarget.com/zone-transfer/
 
-!()[https://academy.hackthebox.com/storage/modules/144/virustotal.png]
+![](https://academy.hackthebox.com/storage/modules/144/virustotal.png)
 
-https://censys.io
+- https://censys.io
+- https://crt.sh
 
-https://crt.sh
+**CRT.sh**
 
 `0x4ns3nic@htb[/htb]$ curl -s "https://crt.sh/?q=${TARGET}&output=json" | jq -r '.[] | "\(.name_value)\n\(.common_name)"' | sort -u > "${TARGET}_crt.sh.txt"`
 
 `0x4ns3nic@htb[/htb]$ openssl s_client -ign_eof 2>/dev/null <<<$'HEAD / HTTP/1.0\r\n\r' -connect "${TARGET}:${PORT}" | openssl x509 -noout -text -in - | grep 'DNS' | sed -e 's|DNS:|\n|g' -e 's|^\*.*||g' | tr -d ',' | sort -u`
 
-https://github.com/laramies/theHarvester
+[theHarvester](https://github.com/laramies/theHarvester)
 
 |                                      Source                     |                       Description                                                                                                          |
 | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
@@ -66,6 +67,8 @@ https://github.com/laramies/theHarvester
 
 
 `0x4ns3nic@htb[/htb]$ cat *.json | jq -r '.hosts[]' 2>/dev/null | cut -d':' -f 1 | sort -u > "${TARGET}_theHarvester.txt"`
+
+**Waybackurls**
 
 `0x4ns3nic@htb[/htb]$ waybackurls -dates https://facebook.com > waybackurls.txt`
 
